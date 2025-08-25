@@ -18,14 +18,8 @@ def run_test_cases(Solution, test_input_json) -> bool:
     except AttributeError:
         print(f"Error: Test method '{test_function_name}' not found in Solution class.")
         return False
-    
-    # # Get the array of tests with expected inputs and True/False results
-    # tests = test_input_json["tests"]
-    # for test in tests:
-    #     results.append(method_to_call(test))
 
     tests = test_input_json["tests"]
-    all_passed = True
 
     for i, test in enumerate(tests):
         raw_params = test["Input"]
@@ -55,13 +49,7 @@ def run_test_cases(Solution, test_input_json) -> bool:
             test_passes.append(True)
         else:
             test_passes.append(False)
-    # index = 0
-    # for result in results:
-    #     expected_result = bool(tests[index]["Result"])
-    #     actual_result = bool(test["Result"])
-    #     if(expected_result == actual_result):
-    #         test_passes.append(True)
-    #     index += 1
+
 
     index = 0
     for test_pass in test_passes:
