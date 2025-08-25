@@ -1,0 +1,33 @@
+{
+    "method": "isValid",
+    "tests": [
+        {
+            "Result": "True",
+            "Input": "()"
+        },
+        {
+            "Result": "True",
+            "Input": "()[]{}" 
+        },
+        {
+            "Result": "False",
+            "Input": "(]"
+        },
+        {
+            "Result": "True",
+            "Input": "([])"
+        },
+        {
+            "Result": "False",
+            "Input": "([)]"
+        },  
+        {
+            "Result": "False",
+            "Input": "([)][]{}" 
+        },
+        {
+            "Result": "False",
+            "Input": "(){}}{"
+        }
+    ]
+}
