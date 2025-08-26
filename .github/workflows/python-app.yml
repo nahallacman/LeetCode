@@ -44,7 +44,7 @@ jobs:
     # (Your test runner must generate a 'test-results.xml' file in JUnit format)
     - name: Report test results
       if: always() # Run this step even if tests fail
-      uses: dorny/test-reporter@v1
+      uses: dorny/test-reporter@v2
       with:
         name: LeetCode Results
         path: '**/${{env.test_result_file_name}}' # Path to JUnit XML files
