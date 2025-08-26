@@ -17,6 +17,9 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/run_all_tests.py",
+            "args": [
+                "test-results.xml" 
+            ],
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}"
         }
