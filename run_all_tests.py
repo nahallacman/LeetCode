@@ -57,6 +57,7 @@ def main():
         print(f"\n❌❌❌ {len(failed_tests)} problem suite(s) failed: ❌❌❌")
         for test_name in failed_tests:
             print(f"  - {test_name}")
+        exit(1)
 
 if __name__ == "__main__":
     main()
