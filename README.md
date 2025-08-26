@@ -1,0 +1,1 @@
+[![Python application](https://github.com/nahallacman/LeetCode/actions/workflows/python-app.yml/badge.svg)](https://github.com/nahallacman/LeetCode/actions/workflows/python-app.yml)
