@@ -14,12 +14,16 @@ import re
 
 class Solution:
     def sortedWordCount(self, s: str) -> Dict[str, int]:
+        # Dictionary of outputs, all using a [token, count] format
         retval = {}
         # Tokenize the input into words. Split on syntax and punctuation.
-
         token_array =  re.findall(r'\b\w+\b', s)
+
+        # Iterate over each token in the token array
         for token in token_array:
+            # Make the token lower case always to handle things like starts of sentences, random capitalizations in words, etc.
             token_lower = str.lower(token)
+            # Attempt to add one to the count of the current token. If it isn't found or there are access issues, initialize the count of that token to 1.
             try:
                 retval[token_lower] += 1
             except:
