@@ -187,7 +187,7 @@ class Solution:
         return retval
     
     # So this works but the len() doen't work on the regular structure.
-    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+    def __addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
         current = 0
         overflow = 0
         ret_iter = None
@@ -231,7 +231,47 @@ class Solution:
 
         return retval
 
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        current = 0
+        overflow = 0
+        ret_iter = None
+        retval = None
 
+        # Needs to only try to move on when there are still items in the list... 
+        while l1 or l2:
+            l1_current = 0
+            l2_current = 0
+            try:
+                l1_current = l1.val
+                l1 = l1.next
+            except Exception as E:
+                pass
+            try:
+                l2_current = l2.val
+                l2 = l2.next
+            except Exception as E:
+                pass
+            current = l1_current + l2_current + overflow
+            if current >= 10:
+                overflow = 1
+                current = current - 10
+            else:
+                overflow = 0
+            
+            next = ListNode(current)
+            if(not ret_iter):
+                retval = next
+                ret_iter = next
+            else:
+                ret_iter.next = next
+                ret_iter = next
+
+        if overflow == 1:
+            next = ListNode(overflow)
+            ret_iter.next = next
+            ret_iter = next
+
+        return retval
 
 if __name__ == "__main__":
     # Get the directory where this solution.py script lives
