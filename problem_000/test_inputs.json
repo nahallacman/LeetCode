@@ -1,0 +1,50 @@
+{
+    "method": "sortedWordCount",
+    "tests": [
+        {
+            "id": 1,
+            "Input": "apple banana apple orange banana apple",
+            "Output": {
+                "apple": 3,
+                "banana": 2,
+                "orange": 1
+            },
+            "description": "Simple case with repeated words."
+        },
+        {
+            "id": 2,
+            "Input": "The quick brown fox jumps over the lazy dog The dog was not that lazy",
+            "Output": {
+                "the": 3,
+                "dog": 2,
+                "lazy": 2,
+                "quick": 1,
+                "brown": 1,
+                "fox": 1,
+                "jumps": 1,
+                "over": 1,
+                "was": 1,
+                "not": 1,
+                "that": 1
+            },
+            "description": "Case with punctuation and varied capitalization, assuming punctuation is ignored and words are case-insensitive."
+        },
+        {
+            "id": 3,
+            "Input": "one two three four five six seven eight nine ten",
+            "Output": {
+                "one": 1,
+                "two": 1,
+                "three": 1,
+                "four": 1,
+                "five": 1,
+                "six": 1,
+                "seven": 1,
+                "eight": 1,
+                "nine": 1,
+                "ten": 1
+            },
+            "description": "Case with all unique words."
+        }
+    ]
+}
