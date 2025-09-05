@@ -13,7 +13,7 @@ MAX_32_BIT_INT = (2**31) -1
 MAX_32_BIT_INT_NEGATIVE = -2**(31)
 
 class Solution:
-    def reverse(self, x: int) -> int:
+    def __reverse(self, x: int) -> int:
         intAsStr = str(x)
         print(intAsStr)
         reverseIntAsStr = []
@@ -43,6 +43,34 @@ class Solution:
         print(finalStr)
 
         retval = int(finalStr)
+
+        # Ensure that the integer we found is within 32 bit signed values (only doing it this way because of the strange way python treats integers. If this was C I would do it very differently.)
+        # Cover max and min 32 bit signed integer cases
+        if(retval > MAX_32_BIT_INT):
+            retval = 0
+        elif(retval < MAX_32_BIT_INT_NEGATIVE):
+            retval = 0
+
+        return retval
+
+    def reverse(self, x: int) -> int:
+        intAsStr = str(x)
+        i = len(intAsStr)
+        sign = None
+
+        # If the first symbol is a sign symbol, remove the sign symbol and process the rest of the string
+        if(intAsStr[0] == "-" or intAsStr[0] == "+"):
+            sign = intAsStr[0]
+            intAsStr = intAsStr[1:]
+
+        # pythonic string reversal method I looked up
+        intAsStr = intAsStr[::-1]
+
+        # put the sign symbol back on the string if we found one
+        if sign is not None:
+            intAsStr = sign + intAsStr
+
+        retval = int(intAsStr)
 
         # Ensure that the integer we found is within 32 bit signed values (only doing it this way because of the strange way python treats integers. If this was C I would do it very differently.)
         # Cover max and min 32 bit signed integer cases
