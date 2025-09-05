@@ -73,6 +73,8 @@ def run_test_cases(Solution: Type, test_input_json: dict) -> bool:
             if TEST_PASS_FAIL_PRINT:
                 print(f"Test #{i+1} PASSED.")
         else:
+            if TEST_PASS_FAIL_PRINT:
+                print(f"Test #{i+1} FAILED !!!!")
             # The detailed failure message is already printed above
             all_passed = False
             
