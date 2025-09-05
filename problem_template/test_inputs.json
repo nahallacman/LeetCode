@@ -1,0 +1,9 @@
+{
+    "method": "isValid",
+    "tests": [
+        {
+            "Input": "()",
+            "Output": "True"
+        }
+    ]
+}
