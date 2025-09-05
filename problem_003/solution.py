@@ -26,9 +26,11 @@ class Solution:
             if not current_string:
                 current_string = str
             else:
-                if current_string[0] == str:
+                #TODO: I feel like I can do a much better job than this one... it's messy and slow even if it works.
+                if str in current_string:
+                    repeat_index = current_string.index(str) + 1
                     # We are finding a new character string, so we should store the old character string length off somewhere.
-                    current_string = current_string[1:] + str
+                    current_string = current_string[repeat_index:] + str
                     measuredLengths[str] = len(hashMap[str])
                 else:
                     current_string = current_string + str
@@ -42,13 +44,11 @@ class Solution:
         # Soo.... now I should be able to iterate through meaturedLengths see the lengths of each string based on it's index. Then I just need to find the max?
         for character in measuredLengths:
             length = measuredLengths[character]
-            print(f"character: {character}, length: {length} ")
+            # print(f"character: {character}, length: {length} ")
             if length > longest_string:
                 longest_string = length
 
         return longest_string
-
-            
 
 
 if __name__ == "__main__":

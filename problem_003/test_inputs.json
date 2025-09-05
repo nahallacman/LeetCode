@@ -12,6 +12,14 @@
         {
             "Input": "pwwkew",
             "Output": "3"
+        },
+        {
+            "Input": "a",
+            "Output": "1"
+        },
+        {
+            "Input": " ",
+            "Output": "1"
         }
     ]
 }
