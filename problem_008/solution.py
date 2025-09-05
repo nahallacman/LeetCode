@@ -12,55 +12,63 @@ from test_runner.wrapper import run_tests
 MAX_32_BIT_INT = (2**31) -1
 MAX_32_BIT_INT_NEGATIVE = -2**(31)
 
-# TODO: this needs a rework to match THEIR description of the algorithm instead of doing it how I think it should be done. Only leading whitespace is removed, etc.
 class Solution:
     # We should just have a few simple rules:
-    # If you find a character, stop scanning
-    # If you find whitespace, discard and keep scanning
-    # If you find a negative sign, if number string is empty, add to number string
-    # If you find a number, add to number string
+    # If you start with whitespace, process until you don't see whitespace. Repeated whitespace after that means the end of the number.
+    # If you see a + or a - it counts as the start of the number, but a second + or - means the end of the number.
+    # If you see a number, add it to the string to process. If you see anything else, stop processing and convert the string to a number.
+    # If you reach the end of the string, stop processing and convert the string to a number.
+    # If the value is greater than a max signed 32 bit integer, round down to a max signed 32 bit integer.
+    # If the value is less than a negative max signed 32 bit integer, round up to a negative max signed 32 bit integer.
+
     def myAtoi(self, s: str) -> int:
         retval = 0
         numberString = ""
+        processingLeadingWhiteSpace = True
         signFound = False
-        for str in s:
-            if (str >= "a" and str <= "z") or (str >= "A" and str <= "Z"):
-                # Stop scanning
-                break
-            elif (str == " " or str == "\t" or str == "\n"):
-                # Do nothing and move on to the next character
-                if(numberString == "") or not signFound:
+
+        i = -1
+        while i + 1 < len(s):
+            i = i + 1
+            char = s[i]
+            # Process leading whitespace
+            if processingLeadingWhiteSpace:
+                if (char == " " or char == "\t" or char == "\n"):
+                    # Do nothing and move on to the next character
                     continue
-                # If there are already characters in the number string, we have reached the end of the number and stop scanning
                 else:
-                    break
-            elif (str == "-"):
-                # If we find more than one sign, stop processing
-                if signFound == True:
-                    break
-                signFound = True
-                # If we have a value in the number string (aka not at the beginning of the string) stop processing
-                if numberString == "":
-                    numberString += str
-                else:
-                    break
-            elif (str == "+"):
-                # If we find more than one sign, stop processing
-                if(signFound == True):
-                    break
-                signFound = True
-            elif (str >= "0" and str <= "9"):
-                numberString += str
-            else:
-                # unknown character, just stop scanning
-                break
+                    processingLeadingWhiteSpace = False
             
+            # Look for the first instance of a sign character. If we find a sign character for a second time, or we have already found any other non-whitespace character, stop scanning.
+            if (char == "+" or char == "-"):
+                if signFound == False:
+                    signFound = True
+                    numberString += char
+                    # Scan to the next character because this was a valid sign input
+                    continue
+                else:
+                    # We already found a sign character or already found a number, break out of scanning for more numbers
+                    break
+
+            if (char >= "0" and char <= "9"):
+                # This is a valid number!
+                numberString += char
+                # Sign characters after this point are invalid
+                signFound = True
+            else:
+                # Okay we scanned for whitespace, sign characters, and number. Anything found at this point means we found an invalid character for the sequence.
+                # Since it is an invalid character, stop scanning.
+                break
+
+        # Debug print the number string we found
         print(f"Number string = {numberString}")
+        # Try to convert it to an integer
         try:
             retval = int(numberString)
         except Exception as e:
             print(f"Exception e = {e}")
 
+        # Ensure that the integer we found is within 32 bit signed values (only doing it this way because of the strange way python treats integers. If this was C I would do it very differently.)
         # Cover max and min 32 bit signed integer cases
         if(retval > MAX_32_BIT_INT):
             retval = MAX_32_BIT_INT
