@@ -10,8 +10,40 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from test_runner.wrapper import run_tests
 
 class Solution:
+    # We should just have a few simple rules:
+    # If you find a character, stop scanning
+    # If you find whitespace, discard and keep scanning
+    # If you find a negative sign, if number string is empty, add to number string
+    # If you find a number, add to number string
     def myAtoi(self, s: str) -> int:
-        return 0
+        retval = 0
+        numberString = ""
+        for str in s:
+            if (str >= "a" and str <= "z") or (str >= "A" and str <= "Z"):
+                # Stop scanning
+                break
+            elif (str == " " or str == "\t" or str == "\n"):
+                # Do nothing and move on to the next character
+                continue
+            elif (str == "-"):
+                if numberString == "":
+                    numberString += str
+                else:
+                    break
+            elif (str >= "0" and str <= "9"):
+                numberString += str
+            else:
+                # unknown character, just stop scanning
+                break
+            
+        print(f"Number string = {numberString}")
+        try:
+            retval = int(numberString)
+        except Exception as e:
+            print(f"Exception e = {e}")
+
+        print(f"converted value = {retval}")
+        return retval
 
 
 if __name__ == "__main__":
