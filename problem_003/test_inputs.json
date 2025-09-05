@@ -28,6 +28,10 @@
         {
             "Input": "aab",
             "Output": "2"
-        }
+        },
+        {
+            "Input": "odgqjxwoupzjiudpadcrozuujz",
+            "Output": "10"
+        }  
     ]
 }

@@ -15,10 +15,7 @@ class Solution:
         hashMap = {}
         measuredLengths = {}
         longest_string = 0
-    
         current_string = ""
-        last_string = ""
-        init = True
 
         # Cover edge case where the string has no repeats
         if len(s) == len(set(s)):
@@ -33,6 +30,7 @@ class Solution:
                     #TODO: I feel like I can do a much better job than this one... it's messy and slow even if it works.
                     if str in current_string:
                         repeat_index = current_string.index(str) + 1
+                        # TODO: I am pretty sure this problem is -- RIGHT HERE -- so I should work on this part harder. If I remove it I miss cases in old tests, but I am assuming this part is the case where I am seeing failures.
                         # We are finding a new character string, so we should store the old character string length off somewhere.
                         current_string = current_string[repeat_index:] + str
                         measuredLengths[str] = len(hashMap[str])
@@ -44,6 +42,15 @@ class Solution:
                 for str2 in current_string:
                     hashMap[str2] = current_string[count:]
                     count += 1
+                    
+                    # See if the current value is greater than the last string value found with this length. If so, update the entry.
+
+                    # Attempts to look up the value, and if it isn't found just return 0
+                    lastMeasuredLength = measuredLengths.get(str2, 0)
+
+                    newMeasuredLength = len(hashMap[str2])
+                    if(newMeasuredLength > lastMeasuredLength):
+                        measuredLengths[str2] = len(hashMap[str2])
 
             # Soo.... now I should be able to iterate through meaturedLengths see the lengths of each string based on it's index. Then I just need to find the max?
             for character in measuredLengths:
