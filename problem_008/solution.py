@@ -80,7 +80,6 @@ class Solution:
 
     def myAtoi(self, s: str) -> int:
         retval = 0
-        # numberString = ""
         signFound = False
         numberStart = None
         numberEnd = None
@@ -92,14 +91,15 @@ class Solution:
 
         i = 0
         # Check for leading whitespce, move pointer on until a non-whitespace character is found
-        while((s[i] == " " or s[i] == "\t" or s[i] == "\n") and not numberEnd):
+        while((s[i] == " " or s[i] == "\t" or s[i] == "\n")):
             if(i + 1 < strLen):
                 i = i + 1
             else:
-                numberEnd = i
+                # We have found the end of the string while processing whitespace, early exit
+                return 0
 
         # Now i should point at the first non-whitspace character. Check for sign character.
-        if ((s[i] == "+" or s[i] == "-") and not numberEnd):
+        if (s[i] == "+" or s[i] == "-"):
             # Make sure there is only one sign character
             if signFound == False:
                 signFound = True
@@ -109,7 +109,8 @@ class Solution:
                 if(i + 1 < strLen):
                     i = i + 1
                 else:
-                    numberEnd = i
+                    # we have found the end of the string while only having whitespace and/or sign characters, early exit
+                    return 0
             else:
                 # early exit if we find more than 1 sign character before numbers to increase processing speed
                 return 0
@@ -127,19 +128,11 @@ class Solution:
             else:
                 numberEnd = i
 
-        # print(f"numberStart = {numberStart}\tnumberEnd = {numberEnd}")
-
-        # # Now the number is the string from index numberStart to numberEnd
-        # numberString = s[numberStart:numberEnd]
-
-        # # Debug print the number string we found
-        # print(f"Number string = {numberString}")
         # Try to convert it to an integer
         try:
-            # retval = int(numberString)
             retval = int(s[numberStart:numberEnd])
         except Exception as e:
-            print(f"Exception e = {e}")
+            return 0
 
         # Ensure that the integer we found is within 32 bit signed values (only doing it this way because of the strange way python treats integers. If this was C I would do it very differently.)
         # Cover max and min 32 bit signed integer cases
@@ -147,8 +140,7 @@ class Solution:
             retval = MAX_32_BIT_INT
         elif(retval < MAX_32_BIT_INT_NEGATIVE):
             retval = MAX_32_BIT_INT_NEGATIVE
-
-        print(f"converted value = {retval}")
+        
         return retval
 
 
