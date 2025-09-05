@@ -20,6 +20,26 @@
         {
             "Input": "words and 987",
             "Output": "0"
+        },
+        {
+            "Input": "-91283472332",
+            "Output": "-2147483648"
+        },
+        {
+            "Input": "+1",
+            "Output": "1"
+        },
+        {
+            "Input": "+-12",
+            "Output": "0"
+        },
+        {
+            "Input": "   +0 123",
+            "Output": "0"
+        },
+        {
+            "Input": "  +  413",
+            "Output": "0"
         }
     ]
 }
