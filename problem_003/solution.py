@@ -20,35 +20,39 @@ class Solution:
         last_string = ""
         init = True
 
-        # Iterate over whole string, one character at a time
-        for str in s:
-            # Initial condition, current_string is empty so put the string into it.
-            if not current_string:
-                current_string = str
-            else:
-                #TODO: I feel like I can do a much better job than this one... it's messy and slow even if it works.
-                if str in current_string:
-                    repeat_index = current_string.index(str) + 1
-                    # We are finding a new character string, so we should store the old character string length off somewhere.
-                    current_string = current_string[repeat_index:] + str
-                    measuredLengths[str] = len(hashMap[str])
+        # Cover edge case where the string has no repeats
+        if len(s) == len(set(s)):
+            return len(s)
+        else:
+            # Iterate over whole string, one character at a time
+            for str in s:
+                # Initial condition, current_string is empty so put the string into it.
+                if not current_string:
+                    current_string = str
                 else:
-                    current_string = current_string + str
+                    #TODO: I feel like I can do a much better job than this one... it's messy and slow even if it works.
+                    if str in current_string:
+                        repeat_index = current_string.index(str) + 1
+                        # We are finding a new character string, so we should store the old character string length off somewhere.
+                        current_string = current_string[repeat_index:] + str
+                        measuredLengths[str] = len(hashMap[str])
+                    else:
+                        current_string = current_string + str
 
-            count = 0
-            # This is really bad, I know. Fix it.
-            for str2 in current_string:
-                hashMap[str2] = current_string[count:]
-                count += 1
+                count = 0
+                # This is really bad, I know. Fix it.
+                for str2 in current_string:
+                    hashMap[str2] = current_string[count:]
+                    count += 1
 
-        # Soo.... now I should be able to iterate through meaturedLengths see the lengths of each string based on it's index. Then I just need to find the max?
-        for character in measuredLengths:
-            length = measuredLengths[character]
-            # print(f"character: {character}, length: {length} ")
-            if length > longest_string:
-                longest_string = length
+            # Soo.... now I should be able to iterate through meaturedLengths see the lengths of each string based on it's index. Then I just need to find the max?
+            for character in measuredLengths:
+                length = measuredLengths[character]
+                # print(f"character: {character}, length: {length} ")
+                if length > longest_string:
+                    longest_string = length
 
-        return longest_string
+            return longest_string
 
 
 if __name__ == "__main__":

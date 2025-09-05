@@ -20,6 +20,14 @@
         {
             "Input": " ",
             "Output": "1"
+        },
+        {
+            "Input": "au",
+            "Output": "2"
+        },
+        {
+            "Input": "aab",
+            "Output": "2"
         }
     ]
 }
