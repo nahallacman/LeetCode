@@ -21,7 +21,7 @@ class Solution:
     # If the value is greater than a max signed 32 bit integer, round down to a max signed 32 bit integer.
     # If the value is less than a negative max signed 32 bit integer, round up to a negative max signed 32 bit integer.
 
-    def myAtoi(self, s: str) -> int:
+    def __myAtoi(self, s: str) -> int:
         retval = 0
         numberString = ""
         processingLeadingWhiteSpace = True
@@ -65,6 +65,79 @@ class Solution:
         # Try to convert it to an integer
         try:
             retval = int(numberString)
+        except Exception as e:
+            print(f"Exception e = {e}")
+
+        # Ensure that the integer we found is within 32 bit signed values (only doing it this way because of the strange way python treats integers. If this was C I would do it very differently.)
+        # Cover max and min 32 bit signed integer cases
+        if(retval > MAX_32_BIT_INT):
+            retval = MAX_32_BIT_INT
+        elif(retval < MAX_32_BIT_INT_NEGATIVE):
+            retval = MAX_32_BIT_INT_NEGATIVE
+
+        print(f"converted value = {retval}")
+        return retval
+
+    def myAtoi(self, s: str) -> int:
+        retval = 0
+        # numberString = ""
+        signFound = False
+        numberStart = None
+        numberEnd = None
+
+        # Initial condition, make sure the string has something in it before processing.
+        if(s == ""):
+            return 0
+        strLen = len(s)
+
+        i = 0
+        # Check for leading whitespce, move pointer on until a non-whitespace character is found
+        while((s[i] == " " or s[i] == "\t" or s[i] == "\n") and not numberEnd):
+            if(i + 1 < strLen):
+                i = i + 1
+            else:
+                numberEnd = i
+
+        # Now i should point at the first non-whitspace character. Check for sign character.
+        if ((s[i] == "+" or s[i] == "-") and not numberEnd):
+            # Make sure there is only one sign character
+            if signFound == False:
+                signFound = True
+                # Track where we found the first valid number character
+                numberStart = i
+                
+                if(i + 1 < strLen):
+                    i = i + 1
+                else:
+                    numberEnd = i
+            else:
+                # early exit if we find more than 1 sign character before numbers to increase processing speed
+                return 0
+            
+        while (numberEnd is None):
+            if(s[i] >= "0" and s[i] <= "9"):
+                # If we haven't already found the start of the string, 
+                if numberStart is None:
+                    numberStart = i
+                
+                if(i + 1 < strLen):
+                    i = i + 1
+                else:
+                    numberEnd = i + 1
+            else:
+                numberEnd = i
+
+        # print(f"numberStart = {numberStart}\tnumberEnd = {numberEnd}")
+
+        # # Now the number is the string from index numberStart to numberEnd
+        # numberString = s[numberStart:numberEnd]
+
+        # # Debug print the number string we found
+        # print(f"Number string = {numberString}")
+        # Try to convert it to an integer
+        try:
+            # retval = int(numberString)
+            retval = int(s[numberStart:numberEnd])
         except Exception as e:
             print(f"Exception e = {e}")
 
