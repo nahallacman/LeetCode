@@ -9,10 +9,36 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 # Now you can import your wrapper
 from test_runner.wrapper import run_tests
 
+import re
+
 class Solution:
     def mostNotBanned(self, paragraph: str, banned: str) -> str:
-        print("Testing")
-        return True
+        # Tokenize the input
+        word_list = re.findall(r"[a-zA-Z]+", paragraph.lower())
+        banned_word_list = re.findall(r"[a-zA-Z]+", banned.lower())
+
+        # Dictionary of all words and their associated counts
+        word_dict = {}
+
+        # Count each word
+        for word in word_list:
+            try:
+                word_dict[word] = word_dict[word] + 1
+            except:
+                word_dict[word] = 1
+
+        # Remove the filtered words
+        filtered_words = {
+            key: value for key, value in word_dict.items() 
+            if key not in banned_word_list
+        }
+
+        # Now that we have a list that filtered out the banned words, return the biggest count word
+        word = max(filtered_words, key=filtered_words.get)
+
+        print(f"word that was used the most and was not banned = {word}")
+
+        return word
 
 
 if __name__ == "__main__":
