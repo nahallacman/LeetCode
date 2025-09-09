@@ -29,37 +29,31 @@ def run_test_cases(Solution: Type, test_input_json: dict) -> bool:
         raw_output = test["Output"]
         actual_output = None
         
-        # --- Flexible Output Parsing ---
-        # If the expected output in the JSON is a string, parse it.
-        # Otherwise, use the direct object (like a dict or list).
+        # --- Flexible Output Parsing (No change here) ---
         expected_output = None
         if isinstance(raw_output, str):
             try:
                 expected_output = ast.literal_eval(raw_output)
             except (ValueError, SyntaxError):
-                # If parsing fails, it's a literal string output
                 expected_output = raw_output
         else:
             expected_output = raw_output
 
-        # --- Flexible Input Handling & Method Call ---
-        # Case 1: Input is a dictionary of named parameters (old format)
+        # --- Flexible Input Handling & Method Call (UPDATED LOGIC) ---
+        # Case 1: Input is a dictionary of named parameters.
         if isinstance(raw_input, dict):
-            parsed_params = {}
-            for key, value in raw_input.items():
-                # The old format had string-formatted literals
-                parsed_params[key] = ast.literal_eval(value)
-            actual_output = method_to_call(**parsed_params)
-        # Case 2: Input is a single, direct value (new format)
+            # The raw_input dictionary's keys match the parameter names.
+            # We can unpack it directly into the method call.
+            actual_output = method_to_call(**raw_input)
+        # Case 2: Input is a single, direct value.
         else:
             actual_output = method_to_call(raw_input)
 
-        # --- Comparison ---
+        # --- Comparison (No change here) ---
         if actual_output == expected_output:
             test_passes.append(True)
         else:
             test_passes.append(False)
-            # Provide a detailed failure message immediately
             print(f"--- Test #{i+1} FAILED ---")
             print(f"  Input:    {raw_input}")
             print(f"  Expected: {expected_output}")
@@ -75,7 +69,6 @@ def run_test_cases(Solution: Type, test_input_json: dict) -> bool:
         else:
             if TEST_PASS_FAIL_PRINT:
                 print(f"Test #{i+1} FAILED !!!!")
-            # The detailed failure message is already printed above
             all_passed = False
             
     return all_passed
