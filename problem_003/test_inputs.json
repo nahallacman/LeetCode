@@ -1,0 +1,37 @@
+{
+    "method": "lengthOfLongestSubstring",
+    "tests": [
+        {
+            "Input": "abcabcbb",
+            "Output": "3"
+        },
+        {
+            "Input": "bbbbb",
+            "Output": "1"
+        },
+        {
+            "Input": "pwwkew",
+            "Output": "3"
+        },
+        {
+            "Input": "a",
+            "Output": "1"
+        },
+        {
+            "Input": " ",
+            "Output": "1"
+        },
+        {
+            "Input": "au",
+            "Output": "2"
+        },
+        {
+            "Input": "aab",
+            "Output": "2"
+        },
+        {
+            "Input": "odgqjxwoupzjiudpadcrozuujz",
+            "Output": "10"
+        }  
+    ]
+}
