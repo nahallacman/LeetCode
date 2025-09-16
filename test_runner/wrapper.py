@@ -1,9 +1,8 @@
-# In wrapper.py
-
 import json
 import sys
 import ast
 from typing import Type, Any
+import inspect
 
 TEST_PASS_FAIL_PRINT = True
 
@@ -11,6 +10,8 @@ def run_test_cases(Solution: Type, test_input_json: dict) -> bool:
     """
     Runs test cases from a loaded JSON object against a Solution class.
     This version is flexible and handles multiple input/output formats.
+    This version also intelligently inspects function type hints to decide
+    whether to parse string inputs or pass them through directly.
     """
     test_passes = []
     test_function_name = test_input_json["method"]
@@ -22,6 +23,13 @@ def run_test_cases(Solution: Type, test_input_json: dict) -> bool:
     except AttributeError:
         print(f"Error: Test method '{test_function_name}' not found in Solution class.")
         return False
+
+    # Get the function signature to inspect its type hints
+    try:
+        sig = inspect.signature(method_to_call)
+    except ValueError:
+        # Happens on some built-in types, not expected for user code
+        sig = None
 
     tests = test_input_json["tests"]
 
@@ -39,37 +47,49 @@ def run_test_cases(Solution: Type, test_input_json: dict) -> bool:
                 expected_output = raw_output
         else:
             expected_output = raw_output
-
         
         # Case 1: Input is a dictionary of named parameters.
         if isinstance(raw_input, dict):
             parsed_params = {}
             for key, value in raw_input.items():
-                # If a value is a string, we TRY to parse it.
-                if isinstance(value, str):
+                expected_type = sig.parameters.get(key).annotation if sig else None
+                
+                # If the function expects a string and gets a string, pass it directly.
+                if isinstance(value, str) and expected_type is str:
+                    parsed_params[key] = value
+                # Otherwise, check if the value is a string
+                elif isinstance(value, str):
                     try:
-                        # This works for "[1,2,3]" or "9"
+                        # And attempt to convert it
                         parsed_params[key] = ast.literal_eval(value)
                     except (ValueError, SyntaxError):
-                        # This works for "Bob hit a ball..."
+                        # If we can't convert it, just use the raw value
+                        print("ast.literal_eval() failed, using raw value")
                         parsed_params[key] = value
                 else:
-                    # Value is already a number, list, etc. from JSON.
                     parsed_params[key] = value
             actual_output = method_to_call(**parsed_params)
             
         # Case 2: Input is a single value.
         else:
+            # Get the type hint of the first parameter
+            params = list(sig.parameters.values()) if sig else []
+            expected_type = params[0].annotation if params else None
+            
             parsed_input = None
-            if isinstance(raw_input, str):
+            # If the function expects a string and gets a string, pass it directly.
+            if isinstance(raw_input, str) and expected_type is str:
+                parsed_input = raw_input
+            # Otherwise, check if the value is a string
+            elif isinstance(raw_input, str):
                 try:
-                    # This works for inputs like "[3,3,3,1,3]"
+                    # And attempt to convert it
                     parsed_input = ast.literal_eval(raw_input)
                 except (ValueError, SyntaxError):
-                    # This works for a simple string input "hello"
+                    # If we can't convert it, just use the raw value
+                    print("ast.literal_eval() failed, using raw value")
                     parsed_input = raw_input
             else:
-                # Input is already a number or list from JSON.
                 parsed_input = raw_input
             actual_output = method_to_call(parsed_input)
 
