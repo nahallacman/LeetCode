@@ -2,6 +2,7 @@ import json
 import sys
 import ast
 from typing import Type, Any
+import inspect
 
 TEST_PASS_FAIL_PRINT = True
 
@@ -9,11 +10,12 @@ def run_test_cases(Solution: Type, test_input_json: dict) -> bool:
     """
     Runs test cases from a loaded JSON object against a Solution class.
     This version is flexible and handles multiple input/output formats.
+    This version also intelligently inspects function type hints to decide
+    whether to parse string inputs or pass them through directly.
     """
     test_passes = []
     test_function_name = test_input_json["method"]
 
-    # Create an instance of the class
     solver = Solution()
 
     try:
@@ -22,6 +24,13 @@ def run_test_cases(Solution: Type, test_input_json: dict) -> bool:
         print(f"Error: Test method '{test_function_name}' not found in Solution class.")
         return False
 
+    # Get the function signature to inspect its type hints
+    try:
+        sig = inspect.signature(method_to_call)
+    except ValueError:
+        # Happens on some built-in types, not expected for user code
+        sig = None
+
     tests = test_input_json["tests"]
 
     for i, test in enumerate(tests):
@@ -29,44 +38,73 @@ def run_test_cases(Solution: Type, test_input_json: dict) -> bool:
         raw_output = test["Output"]
         actual_output = None
         
-        # --- Flexible Output Parsing ---
-        # If the expected output in the JSON is a string, parse it.
-        # Otherwise, use the direct object (like a dict or list).
+        # --- Output Parsing ---
         expected_output = None
         if isinstance(raw_output, str):
             try:
                 expected_output = ast.literal_eval(raw_output)
             except (ValueError, SyntaxError):
-                # If parsing fails, it's a literal string output
                 expected_output = raw_output
         else:
             expected_output = raw_output
-
-        # --- Flexible Input Handling & Method Call ---
-        # Case 1: Input is a dictionary of named parameters (old format)
+        
+        # Case 1: Input is a dictionary of named parameters.
         if isinstance(raw_input, dict):
             parsed_params = {}
             for key, value in raw_input.items():
-                # The old format had string-formatted literals
-                parsed_params[key] = ast.literal_eval(value)
+                expected_type = sig.parameters.get(key).annotation if sig else None
+                
+                # If the function expects a string and gets a string, pass it directly.
+                if isinstance(value, str) and expected_type is str:
+                    parsed_params[key] = value
+                # Otherwise, check if the value is a string
+                elif isinstance(value, str):
+                    try:
+                        # And attempt to convert it
+                        parsed_params[key] = ast.literal_eval(value)
+                    except (ValueError, SyntaxError):
+                        # If we can't convert it, just use the raw value
+                        print("ast.literal_eval() failed, using raw value")
+                        parsed_params[key] = value
+                else:
+                    parsed_params[key] = value
             actual_output = method_to_call(**parsed_params)
-        # Case 2: Input is a single, direct value (new format)
+            
+        # Case 2: Input is a single value.
         else:
-            actual_output = method_to_call(raw_input)
+            # Get the type hint of the first parameter
+            params = list(sig.parameters.values()) if sig else []
+            expected_type = params[0].annotation if params else None
+            
+            parsed_input = None
+            # If the function expects a string and gets a string, pass it directly.
+            if isinstance(raw_input, str) and expected_type is str:
+                parsed_input = raw_input
+            # Otherwise, check if the value is a string
+            elif isinstance(raw_input, str):
+                try:
+                    # And attempt to convert it
+                    parsed_input = ast.literal_eval(raw_input)
+                except (ValueError, SyntaxError):
+                    # If we can't convert it, just use the raw value
+                    print("ast.literal_eval() failed, using raw value")
+                    parsed_input = raw_input
+            else:
+                parsed_input = raw_input
+            actual_output = method_to_call(parsed_input)
 
         # --- Comparison ---
         if actual_output == expected_output:
             test_passes.append(True)
         else:
             test_passes.append(False)
-            # Provide a detailed failure message immediately
             print(f"--- Test #{i+1} FAILED ---")
             print(f"  Input:    {raw_input}")
             print(f"  Expected: {expected_output}")
             print(f"  Actual:   {actual_output}")
             print("------------------------")
 
-    # Process results as in your original script
+    # Process results
     all_passed = True
     for i, passed in enumerate(test_passes):
         if passed:
@@ -75,7 +113,6 @@ def run_test_cases(Solution: Type, test_input_json: dict) -> bool:
         else:
             if TEST_PASS_FAIL_PRINT:
                 print(f"Test #{i+1} FAILED !!!!")
-            # The detailed failure message is already printed above
             all_passed = False
             
     return all_passed
