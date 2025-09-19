@@ -1,27 +1,58 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Run LeetCode Solution",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "name": "Run All Tests",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/run_all_tests.py",
-            "args": [
-                "test-results.xml" 
-            ],
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}"
-        }
-    ]
+	"version": "0.2.0",
+	"inputs": [
+		{
+			"id": "problemNumber",
+			"description": "Enter the 3-digit problem number to DEBUG:",
+			"default": "001",
+			"type": "promptString"
+		}
+	],
+	"configurations": [
+		{
+			"name": "C++: Run All Tests",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "C:/Windows/System32/cmd.exe",
+			"preLaunchTask": "Run All Tests",
+			"console": "integratedTerminal",
+			"cwd": "${workspaceFolder}/c++"
+		},
+		{
+			"name": "C++: Debug Single Problem",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/c++/build/problem_${input:problemNumber}/runner.exe",
+			"args": [
+				"-f",
+				"problems/problem_${input:problemNumber}/problem_${input:problemNumber}.json"
+			],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}/c++",
+			"MIMode": "gdb",
+			"miDebuggerPath": "C:/msys64/ucrt64/bin/gdb.exe",
+			// This is the only change: point to the new build task
+			"preLaunchTask": "C++: Build active problem for debugger",
+			"console": "integratedTerminal"
+		},
+		{
+			"name": "Python: Run Active File",
+			"type": "python",
+			"request": "launch",
+			"program": "${file}",
+			"console": "integratedTerminal",
+			"cwd": "${fileDirname}"
+		},
+		{
+			"name": "Python: Run All Tests",
+			"type": "python",
+			"request": "launch",
+			"program": "${workspaceFolder}/run_all_tests.py",
+			"args": [
+				"test-results.xml"
+			],
+			"console": "integratedTerminal",
+			"cwd": "${workspaceFolder}"
+		}
+	]
 }

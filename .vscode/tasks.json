@@ -1,0 +1,69 @@
+{
+	"version": "2.0.0",
+	"inputs": [
+		{
+			"id": "problemNumber",
+			"description": "Enter the 3-digit problem number to build:",
+			"default": "001",
+			"type": "promptString"
+		}
+	],
+	"tasks": [
+		{
+			"label": "C++: Build active problem for debugger",
+			"type": "process",
+			"command": "C:/msys64/ucrt64/bin/g++.exe",
+			"args": [
+				"-g",
+				"-std=c++20",
+				"-Wall",
+				// --- Include Paths ---
+				"-IC:/msys64/ucrt64/include",
+				// CORRECTED: Added "problem_" prefix
+				"-Iproblems/problem_${input:problemNumber}",
+				"-Itests_runner",
+				// --- Source Files ---
+				"tests_runner/tests_runner.cpp",
+				// CORRECTED: Added "problem_" prefix
+				"problems/problem_${input:problemNumber}/solution.cpp",
+				// --- Output File ---
+				"-o",
+				"build/problem_${input:problemNumber}/runner.exe",
+				// --- Linker Flags ---
+				"-LC:/msys64/ucrt64/lib",
+				"-ljsoncpp",
+				"-static-libstdc++",
+				"-static-libgcc"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/c++"
+			},
+			"problemMatcher": ["$gcc"],
+			"group": "build"
+		},
+		{
+			"label": "Run All Tests",
+			"type": "process",
+			"command": "C:/msys64/usr/bin/bash.exe",
+			"args": [
+				"-ic",
+				"cd \"$(cygpath '${workspaceFolder}')/c++\" && make clean && make test-all"
+			],
+			"options": {
+				"env": {
+					"PATH": "C:\\msys64\\ucrt64\\bin;C:\\msys64\\usr\\bin;${env:PATH}"
+				}
+			},
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated",
+				"clear": true
+			},
+			"problemMatcher": ["$gcc"]
+		}
+	]
+}
