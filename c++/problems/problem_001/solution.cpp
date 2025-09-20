@@ -41,13 +41,14 @@ std::vector<int> Solution::twoSum(std::vector<int>& nums, int target) {
             retval.push_back(index);
             // debug print the map
             for(auto map_iter : lookup){
-                std::cout << "key: " << map_iter.first << std::endl;
+                std::cout << "key: " << map_iter.first << "value: " << map_iter.second << std::endl;
             }
-            int distanace = std::distance(lookup.begin(), found);
-            retval.push_back(distanace);
+            // int distanace = std::distance(lookup.begin(), found);
+            // retval.push_back(distanace);
+            retval.push_back(found->second);
             return retval;
         } else {
-            lookup.insert({*it, local_target});
+            lookup.insert({*it, index});
         }
     }
 
