@@ -2,6 +2,7 @@
 #define SOLUTION_HPP_
 
 #include <vector>
+#include <map>
 
 class Solution {
 public:

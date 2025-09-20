@@ -1,21 +1,53 @@
 #include "solution.hpp"
 
+#include <iostream>
+
+// // Standard LeetCode solution for Two Sum
+// std::vector<int> Solution::twoSum(std::vector<int>& nums, int target) {
+//     // Input: nums = [2,7,11,15], target = 9
+//     // Output: [0,1]
+//     // Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+
+//     for(auto it=nums.begin(); it != nums.end(); ++it){
+//         for(auto j=(it + 1); j != nums.end(); ++j){
+//             if(*it + *j == target) {
+//                 auto retval = std::vector<int>();
+//                 int index = std::distance(nums.begin(), it);
+//                 int index2 = std::distance(nums.begin(), j);
+//                 retval.push_back(index);
+//                 retval.push_back(index2);
+//                 return retval;
+//             }
+//         }
+//     }
+
+//     return std::vector<int>(); // Should not happen for valid inputs
+// }
+
 // Standard LeetCode solution for Two Sum
 std::vector<int> Solution::twoSum(std::vector<int>& nums, int target) {
     // Input: nums = [2,7,11,15], target = 9
     // Output: [0,1]
     // Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
-
-    for(auto it=nums.begin(); it != nums.end(); ++it){
-        for(auto j=(it + 1); j != nums.end(); ++j){
-            if(*it + *j == target) {
-                auto retval = std::vector<int>();
-                int index = std::distance(nums.begin(), it);
-                int index2 = std::distance(nums.begin(), j);
-                retval.push_back(index);
-                retval.push_back(index2);
-                return retval;
+    std::map<int, int> lookup;
+    auto index = 0;
+    for(auto it = nums.begin(); it != nums.end(); it++, index++){
+        int local_target = target - *it;
+        auto found = lookup.find(local_target);
+        if(found != lookup.end()){
+            // If we find a value that the math check will return, now we just need to get the index of the current iterator and the value that matched in the map.
+            std::vector<int> retval = std::vector<int>();
+            
+            retval.push_back(index);
+            // debug print the map
+            for(auto map_iter : lookup){
+                std::cout << "key: " << map_iter.first << std::endl;
             }
+            int distanace = std::distance(lookup.begin(), found);
+            retval.push_back(distanace);
+            return retval;
+        } else {
+            lookup.insert({*it, local_target});
         }
     }
 

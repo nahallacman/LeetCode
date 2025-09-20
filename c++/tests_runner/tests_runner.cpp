@@ -61,8 +61,24 @@ bool handleTwoSum(Solution& solution, const Json::Value& test) {
     // Normalize for comparison, since order doesn't matter for this problem
     std::sort(actual.begin(), actual.end());
     std::sort(expected.begin(), expected.end());
+
+    bool success = (actual == expected);
     
-    return actual == expected;
+    if(!success) {
+        std::cout << std::endl << "actual" << std:: endl;
+        for(auto &vals : actual){
+            std::cout << vals << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "expected:" << std::endl;
+        for(auto &vals : expected){
+            std::cout << vals << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    return success;
 }
 
 // =======================================================================
