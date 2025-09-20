@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include <unordered_map>
+
 // // Standard LeetCode solution for Two Sum
 // std::vector<int> Solution::twoSum(std::vector<int>& nums, int target) {
 //     // Input: nums = [2,7,11,15], target = 9
@@ -24,7 +26,7 @@
 //     return std::vector<int>(); // Should not happen for valid inputs
 // }
 
-// Standard LeetCode solution for Two Sum
+// Using the red/black tree to store the values and their indexes to have a nlogn lookup 
 std::vector<int> Solution::twoSum(std::vector<int>& nums, int target) {
     // Input: nums = [2,7,11,15], target = 9
     // Output: [0,1]
@@ -35,16 +37,9 @@ std::vector<int> Solution::twoSum(std::vector<int>& nums, int target) {
         int local_target = target - *it;
         auto found = lookup.find(local_target);
         if(found != lookup.end()){
-            // If we find a value that the math check will return, now we just need to get the index of the current iterator and the value that matched in the map.
+            // If we find a value that the math check will return, now we just need to get the index of the current iterator and the value of the iteratior stored in the map.
             std::vector<int> retval = std::vector<int>();
-            
             retval.push_back(index);
-            // debug print the map
-            for(auto map_iter : lookup){
-                std::cout << "key: " << map_iter.first << "value: " << map_iter.second << std::endl;
-            }
-            // int distanace = std::distance(lookup.begin(), found);
-            // retval.push_back(distanace);
             retval.push_back(found->second);
             return retval;
         } else {
