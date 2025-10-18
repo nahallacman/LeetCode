@@ -15,13 +15,14 @@ class Solution:
         prefix = strs[0]
         for word in strs:
             word_len = len(word)
-            try:
-                for iter in range(word_len):
-                    if(prefix[iter] != word[iter]):
-                        break
-                prefix = word[0:iter]
-            except Exception as e:
-                print(f"Exception e = {e}")
+            prefix_len = len(prefix)
+            iter = 0
+            while(iter < word_len and iter < prefix_len):
+                if(prefix[iter] != word[iter]):
+                    break
+                else:
+                    iter = iter + 1
+            prefix = prefix[0:iter]
         return prefix
 
 if __name__ == "__main__":
