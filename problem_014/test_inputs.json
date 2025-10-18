@@ -1,0 +1,29 @@
+{
+    "method": "longestCommonPrefix",
+    "tests": [
+        {
+            "Input": {
+                "strs": ["flower","flow","flight"]
+            },
+            "Output": "fl"
+        },
+        {
+            "Input": {
+                "strs": ["dog","racecar","car"]
+            },
+            "Output": ""
+        },
+        {
+            "Input": {
+                "strs": ["ab", "a"]
+            },
+            "Output": "a"
+        },
+        {
+            "Input": {
+                "strs": ["reflower","flow","flight"]
+            },
+            "Output": ""
+        }
+    ]
+}
