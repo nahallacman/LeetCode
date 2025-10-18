@@ -1,0 +1,17 @@
+{
+    "method": "romanToInt",
+    "tests": [
+        {
+            "Input": "III",
+            "Output": "3"
+        },
+        {
+            "Input": "LVIII",
+            "Output": "58"
+        },
+        {
+            "Input": "MCMXCIV",
+            "Output": "1994"
+        }
+    ]
+}
