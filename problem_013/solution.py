@@ -88,6 +88,7 @@ class Solution:
             # Check that there is more than 1 character left AND
             # make sure that the next character is not BIGGER than the current character.
             if iter + 1 < len(s) and roman_map[s[iter]] < roman_map[s[iter+1]]:
+                # If this is a pre-pended character that needs special conversion (like IV) just subtract that number before moving to the next character and adding it. If we say x = IV it's the same as saying x = -1, x = x + 5
                 total -= roman_map[s[iter]]
             else:
                 total += roman_map[s[iter]]
