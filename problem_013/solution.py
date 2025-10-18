@@ -11,6 +11,10 @@ from test_runner.wrapper import run_tests
 
 class Solution:
     def romanToInt(self, s: str) -> int:
+        return self.pythonic_solution(s)
+        return self.match_solution(s)
+
+    def match_solution(self, s: str) -> int:
         str_len = len(s)
         retval = 0
         skip = False
@@ -29,7 +33,6 @@ class Solution:
                     retval += temp_retval
             else:
                 skip = False
-                    
         return retval
             
     def roman_lookup(self, char: str):
@@ -68,9 +71,28 @@ class Solution:
             case _:
                 print("Somethig went wrong...")
 
+    def pythonic_solution(self, s: str) -> int:
+        # Lookup map
+        roman_map = {
+            'I': 1,
+            'V': 5,
+            'X': 10,
+            'L': 50,
+            'C': 100,
+            'D': 500,
+            'M': 1000
+        }
 
-            
+        total = 0
+        for iter in range(len(s)):
+            # Check that there is more than 1 character left AND
+            # make sure that the next character is not BIGGER than the current character.
+            if iter + 1 < len(s) and roman_map[s[iter]] < roman_map[s[iter+1]]:
+                total -= roman_map[s[iter]]
+            else:
+                total += roman_map[s[iter]]
 
+        return total
 
 if __name__ == "__main__":
     # Get the directory where this solution.py script lives
