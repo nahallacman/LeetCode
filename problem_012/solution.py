@@ -15,11 +15,9 @@ class Solution:
         int_order = len(int_str)
         retval = ""
         for char in int_str:
-            if(retval and char == "0"):
-                # the next character is 0 so... don't do anything?
-                print("a")
-            else:
+            if(char != "0"):
                 retval += self.convert_character(char, 10**(int_order-1))
+            # else the next character is 0 so don't do anything
             int_order = int_order - 1
         return retval
     
@@ -45,11 +43,11 @@ class Solution:
                 intermediate = "VIII"
             case '9':
                 intermediate = "IX"
-            case '0':
-                intermediate = "X"
-                # Skip returning anything if we are handling the lowest power (aka handle when we have a 0 in the last digit)
-                if(multiple == 1):
-                    return ""
+            # case '0':
+            #     intermediate = "X"
+            #     # Skip returning anything if we are handling the lowest power (aka handle when we have a 0 in the last digit)
+            #     if(multiple == 1):
+            #         return ""
             case _:
                 print("error, a character that is not 0 to 9 was processed somehow...")
         # Now convert the number to the proper scale
