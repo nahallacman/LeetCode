@@ -1,0 +1,17 @@
+{
+    "method": "isPalindrome",
+    "tests": [
+        {
+            "Input": "121",
+            "Output": "True"
+        },
+        {
+            "Input": "-121",
+            "Output": "False"
+        },
+        {
+            "Input": "10",
+            "Output": "False"
+        }
+    ]
+}
