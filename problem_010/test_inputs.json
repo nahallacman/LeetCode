@@ -1,0 +1,68 @@
+{
+    "method": "isMatch",
+    "tests": [
+        {
+            "Input": {
+                "s": "aa", 
+                "p": "a"
+            },
+            "Output": "False"
+        },
+        {
+            "Input": {
+                "s": "aa", 
+                "p": "a*"
+            },
+            "Output": "True"
+        },
+        {
+            "Input": {
+                "s": "ab", 
+                "p": ".*"
+            },
+            "Output": "True"
+        },
+        {
+            "Input": {
+                "s": "aab", 
+                "p": "c*a*b"
+            },
+            "Output": "True"
+        },
+        {
+            "Input": {
+                "s": "aaa", 
+                "p": "a*a"
+            },
+            "Output": "True"
+        },
+        {
+            "Input": {
+                "s": "aaa", 
+                "p": "ab*ac*a"
+            },
+            "Output": "True"
+        },
+        {
+            "Input": {
+                "s": "aaa", 
+                "p": "ab*a*c*a"
+            },
+            "Output": "True"
+        },
+        {
+            "Input": {
+                "s": "ab", 
+                "p": ".*c"
+            },
+            "Output": "False"
+        },
+        {
+            "Input": {
+                "s": "aaa", 
+                "p": "aaaa"
+            },
+            "Output": "False"
+        }
+    ]
+}
