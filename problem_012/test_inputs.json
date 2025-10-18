@@ -1,0 +1,25 @@
+{
+    "method": "intToRoman",
+    "tests": [
+        {
+            "Input": "3749",
+            "Output": "MMMDCCXLIX"
+        },
+        {
+            "Input": "58",
+            "Output": "LVIII"
+        },
+        {
+            "Input": "1994",
+            "Output": "MCMXCIV"
+        },
+        {
+            "Input": "10",
+            "Output": "X"
+        },
+        {
+            "Input": "100",
+            "Output": "C"
+        }
+    ]
+}
