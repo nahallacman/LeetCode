@@ -1,0 +1,29 @@
+{
+    "method": "firstAndLastParenthesis",
+    "tests": [
+        {
+            "Input": "()()",
+            "Output": "[0, 2]"
+        },
+        {
+            "Input": "()()()(())((()((()))))",
+            "Output": "[0, 16]"
+        },
+        {
+            "Input": "()",
+            "Output": "-1"
+        },
+        {
+            "Input": "(())",
+            "Output": "-1"
+        },
+        {
+            "Input": "(",
+            "Output": "-1"
+        },
+        {
+            "Input": "",
+            "Output": "-1"
+        }
+    ]
+}
